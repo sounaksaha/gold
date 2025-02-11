@@ -26,18 +26,18 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
       {/* Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className="text-white p-2 rounded focus:outline-none"
+        className="text-white p-4 rounded focus:outline-none"
       >
         {isOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
       </button>
 
       {/* Menu Items */}
-      <nav className="mt-4">
+      <nav className="mt-6">
         {menuItems.map(({ id, title, link, icon: Icon }) => (
           <div key={id} className="relative group">
             <Link
               to={link}
-              className="flex items-center p-2 rounded hover:bg-gray-700 transition-all"
+              className="flex items-center p-4 rounded hover:bg-gray-700 transition-all"
             >
               {/* Increase icon size when sidebar is closed */}
               <Icon className={`transition-all ${isOpen ? "w-7 h-7" : "w-6 h-6"}`} />
