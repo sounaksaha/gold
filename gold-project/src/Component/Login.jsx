@@ -4,6 +4,7 @@ import { API_URl } from "../config";
 
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import api from "../api/axiosInstance";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,14 +13,16 @@ export default function Login() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-
+    console.log(email);
+    const userName=email;
     try {
-      const response = await axios.post(`${API_URl}/admin.php`, formData);
-      localStorage.setItem("admin_id", response.data.admin_id);
+      const response = await api.post('/admin/login',{userName,password});
+      console.log(userName);
+      
+      localStorage.setItem("admin_id", response.data.data.admin._id);
+      localStorage.setItem("token",response.data.data.token);
+      console.log(response);
+      
       if (response.data.success) {
         toast.success(response.data.message, {
           autoClose: 2000,

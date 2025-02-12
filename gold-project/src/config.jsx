@@ -1,1 +1,1 @@
-export const API_URl = "https://gold.riddleescape.in"
+export const API_URl = "http://localhost:8080/api"
