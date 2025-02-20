@@ -12,6 +12,8 @@ api.interceptors.request.use(
   async (config) => {
     try {
       const token = localStorage.getItem("token");
+      console.log(token);
+      
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -30,7 +32,7 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       console.log("Unauthorized! Redirecting to login...");
       localStorage.removeItem("token");
-      window.location.href = "/login"; // Redirect to login page
+      window.location.href = "/"; // Redirect to login page
     }
     return Promise.reject(error);
   }

@@ -1,29 +1,34 @@
 import { useEffect, useState } from "react";
 import goldImage from "/gold.png";
 import { API_URl } from "../../config";
-
+import { useNavigate } from "react-router-dom";
+import { getAllPrice } from "../../api/apiService";
 
 export default function GoldRate() {
   const [rates, setRates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${API_URl}/allGoldPrice.php?page=${currentPage}&pageSize=${pageSize}&date=${searchTerm}`
+     
+        const response = await getAllPrice(
+          "gold",
+          currentPage,
+          pageSize,
+          searchTerm
         );
-        if (!response.ok) {
+        if (!response) {
           throw new Error("Failed to fetch Gold data");
         }
-
-        const data = await response.json();
-        setRates(data.data);
-        setTotalCount(data.pagination.totalCount);
+        setRates(response.data.results);
+        setTotalCount(response.data.count);
+        // setPageSize(response.data.page_size);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching Gold data:", error);
@@ -33,7 +38,7 @@ export default function GoldRate() {
     };
 
     fetchData();
-  }, [currentPage, pageSize,searchTerm]);
+  }, [currentPage, pageSize, searchTerm]);
 
   const totalPages = Math.ceil(totalCount / pageSize);
 
@@ -57,10 +62,7 @@ export default function GoldRate() {
     setCurrentPage(1); // Reset to the first page on new search
   };
   return (
-    <div
-            className="flex items-center justify-center min-h-screen"
-            
-          >
+    <div className="flex items-center justify-center min-h-screen">
       <div className="container px-6 py-8 mx-auto">
         <h3 className="text-3xl font-medium text-gray-900">Past Gold Rate</h3>
 
@@ -137,7 +139,7 @@ export default function GoldRate() {
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                           <div className="text-sm leading-5 text-gray-900">
-                            {rate.gold_price}  <b>Rs</b>
+                            {rate.price} <b>Rs</b>
                           </div>
                         </td>
                       </tr>

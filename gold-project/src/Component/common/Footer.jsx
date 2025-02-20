@@ -20,14 +20,14 @@ export default function Footer() {
     //         &copy; Incipient Technologies, 2024.
     //       </p>
     //       <div className="order-1 md:order-2">
-    //         <Link  to="/dashboard" className="px-2">Dashboard</Link>
+    //         <Link  to="/dashbo1ard" className="px-2">Dashboard</Link>
 
     //       </div>
     //     </div>
     //   </div>
     // </div>
 
-    <footer class="bg-white shadow-sm dark:bg-gray-900 w-full">
+    <footer class="bg-white shadow-sm dark:bg-gray-900 w-full border border-white">
       <div class="max-w-screen-xl mx-auto p-4 md:py-8">
         <div class="sm:flex sm:items-center sm:justify-between">
           <a

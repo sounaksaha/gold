@@ -13,10 +13,8 @@ export const registerUser = async (req, res) => {
       return res
         .status(400)
         .json(
-          new ApiResponse(
-            401,
-            error.details[0].message.replace(/"/g, "").trim()
-          )
+          new ApiResponse(false,400,error.details[0].message.replace(/"/g, "").trim()
+)
         );
     }
     const admin = await Admin.findOne({ userName });
@@ -54,21 +52,22 @@ export const loginUser = async (req, res) => {
     return res
       .status(400)
       .json(
-        new ApiResponse(401, error.details[0].message.replace(/"/g, "").trim())
+        new ApiResponse(false,401, error.details[0].message.replace(/"/g, "").trim())
       );
   }
 
   const admin = await Admin.findOne({ userName });
-  if (!admin || !(await admin.comparePassword(password))) {
+
+  if (!admin) {
+    return res.status(401).json(new ApiResponse(false, 401, "User Not Found"));
+  } else if ( !(await admin.comparePassword(password))) {
     return res.status(401).json(new ApiResponse(false, 401, "Unauthorize"));
   }
   const token = jwtToken(admin._id, admin.userName);
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(true, 200, "Login Successfull", {
-        token: token,
-        admin: admin,
-      })
-    );
+  return res.status(200).json(
+    new ApiResponse(true, 200, "Login Successfull", {
+      token: token,
+      admin: admin,
+    })
+  );
 };

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import silverImage from "/silver.png";
 import { API_URl } from "../../config";
+import { getAllPrice } from "../../api/apiService";
 export default function SilverRate() {
   const [rates, setRates] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,16 +14,18 @@ export default function SilverRate() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${API_URl}/allSilverPrice.php?page=${currentPage}&pageSize=${pageSize}&date=${searchTerm}`
+                   
+        const response = await getAllPrice(
+          "silver",
+          currentPage,
+          pageSize,
+          searchTerm
         );
-        if (!response.ok) {
+        if (!response.success) {
           throw new Error("Failed to fetch Silver data");
         }
-
-        const data = await response.json();
-        setRates(data.data);
-        setTotalCount(data.pagination.totalCount);
+        setRates(response.data.results);
+        setTotalCount(response.data.count);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching Silver data:", error);
@@ -161,10 +164,11 @@ export default function SilverRate() {
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
-              className={`px-3 py-1 text-sm rounded-md border ${currentPage === index + 1
+              className={`px-3 py-1 text-sm rounded-md border ${
+                currentPage === index + 1
                   ? "bg-blue-300 text-white"
                   : "border-blue-300 text-blue-700 hover:bg-blue-100"
-                } focus:outline-none focus:border-blue-300 focus:shadow-outline-blue`}
+              } focus:outline-none focus:border-blue-300 focus:shadow-outline-blue`}
             >
               {index + 1}
             </button>

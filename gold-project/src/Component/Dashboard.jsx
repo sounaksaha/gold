@@ -5,6 +5,7 @@ import silverCoinImage from "/silver.png";
 import sip from "/sip.png";
 import { Link } from "react-router-dom";
 import { API_URl } from "../config";
+import { singlePrice } from "../api/apiService";
 // import TableOne from '../../components/TableOne.tsx';
 export default function Dashboard() {
   const [goldPrices, setGoldPrices] = useState([]);
@@ -19,38 +20,40 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         //Fetch total customer data
-        const response = await fetch(`${API_URl}/totalCustomer.php`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch total customer data");
-        }
-        const data = await response.json();
-        setTotalCustomers(data);
+        // const response = await fetch(`${API_URl}/totalCustomer.php`);
+        // if (!response.ok) {
+        //   throw new Error("Failed to fetch total customer data");
+        // }
+        // const data = await response.json();
+        // setTotalCustomers(data);
 
-        // Fetch gold quantity data
-        const responseGold = await fetch(`${API_URl}/getGoldQuantity.php`);
-        if (responseGold.ok) {
-          const goldquantity = await responseGold.json();
-          setQuantityGold(goldquantity);
-        }
-        // Fetch silver quantity data
-        const responseSilver = await fetch(`${API_URl}/getSilverQuantity.php`);
-        if (responseSilver.ok) {
-          const silverquantity = await responseSilver.json();
-          setQuantitySilver(silverquantity);
-          console.log(silverquantity);
-        }
+        // // Fetch gold quantity data
+        // const responseGold = await fetch(`${API_URl}/getGoldQuantity.php`);
+        // if (responseGold.ok) {
+        //   const goldquantity = await responseGold.json();
+        //   setQuantityGold(goldquantity);
+        // }
+        // // Fetch silver quantity data
+        // const responseSilver = await fetch(`${API_URl}/getSilverQuantity.php`);
+        // if (responseSilver.ok) {
+        //   const silverquantity = await responseSilver.json();
+        //   setQuantitySilver(silverquantity);
+        //   console.log(silverquantity);
+        // }
 
         // Fetch gold price data
-        const goldResponse = await fetch(`${API_URl}/getGoldPrice.php`);
-        if (goldResponse.ok) {
-          const goldData = await goldResponse.json();
+        const goldResponse = await singlePrice("gold");
+        if (goldResponse.success) {
+          const goldData = goldResponse.data;
+          console.log(goldData);
           setGoldPrices(goldData);
         }
 
         // Fetch silver price data
-        const silverResponse = await fetch(`${API_URl}/getSilverPrice.php`);
-        if (silverResponse.ok) {
-          const silverData = await silverResponse.json();
+        const silverResponse = await singlePrice("silver");
+        if (silverResponse.success) {
+          const silverData = silverResponse.data;
+          console.log(silverData);
           setSilverPrices(silverData);
         }
 
@@ -67,7 +70,6 @@ export default function Dashboard() {
   return (
     <>
       <div className="px-4 sm:px-8 text-white min-h-screen bg-gray-300 bg-cover bg-center">
-
         <div className="flex-1 p-8">
           <dl class="mt-0 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <div class="relative overflow-hidden rounded-lg bg-gray-50 px-4 pb-20 pt-7 shadow sm:px-6 sm:pt-6">
@@ -124,7 +126,7 @@ export default function Dashboard() {
               </dt>
               <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
                 <p class="text-2xl font-semibold text-gray-900">
-                  {goldPrices.gold_price} :
+                  {goldPrices.price} :
                 </p>
 
                 {/* <p class="ml-7 flex items-baseline text-lg font-semibold text-purple-700">
@@ -137,9 +139,21 @@ export default function Dashboard() {
                   <span class="sr-only"> Increased by </span>
                   10 Gm / 24 K
                 </p>
-                <p class="ml-7 flex items-baseline text-m font-semibold text-green-600">
-                  <span class="sr-only"> Increased by </span>
-                  Date: {goldPrices.date}
+                <p className="ml-7 flex items-baseline text-m font-semibold text-green-600">
+                  <span className="sr-only"> Increased by </span>
+                  Date: {new Date(goldPrices.date).toLocaleDateString()}
+                </p>
+                <p className="ml-7 flex items-baseline text-m font-semibold text-green-600">
+                  <span className="sr-only"> Increased by </span>
+                  Time:{" "}
+                  {goldPrices.time
+                    ? new Intl.DateTimeFormat("en-GB", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false, // Ensures 24-hour format
+                        timeZone: "UTC", // Prevents additional conversion
+                      }).format(new Date(goldPrices.time))
+                    : "Loading..."}
                 </p>
 
                 <div class="absolute inset-x-0 bottom-0 bg-gray-600 px-4 py-4 sm:px-6">
@@ -199,12 +213,25 @@ export default function Dashboard() {
               </dt>
               <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
                 <p class="text-2xl font-semibold text-gray-900">
-                  {silverPrices.silver_price}
+                  {silverPrices.price}
                 </p>
 
-                <p class="ml-4 flex items-baseline text-m font-semibold text-red-600">
-                  <span class="sr-only"> Decreased by </span>
-                  Date: {silverPrices.date}
+                <p className="ml-7 flex items-baseline text-m font-semibold text-green-600">
+                  <span className="sr-only"> Increased by </span>
+                  Date: {new Date(silverPrices.date).toLocaleDateString()}
+                </p>
+
+                <p className="ml-7 flex items-baseline text-m font-semibold text-green-600">
+                  <span className="sr-only"> Increased by </span>
+                  Time:{" "}
+                  {silverPrices.time
+                    ? new Intl.DateTimeFormat("en-GB", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false, // Ensures 24-hour format
+                        timeZone: "UTC", // Prevents additional conversion
+                      }).format(new Date(silverPrices.time))
+                    : "Loading..."}
                 </p>
 
                 <div class="absolute inset-x-0 bottom-0 bg-gray-600 px-4 py-4 sm:px-6">
