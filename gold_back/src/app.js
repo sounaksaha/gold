@@ -5,7 +5,8 @@ import morgan from "morgan";
 import connectDb from "./config/db.js";
 import passport from "passport";
 import authRoutes from "./routes/authRoutes.js";
-import priceRoutes from "./routes/priceRoutes.js"
+import priceRoutes from "./routes/priceRoutes.js";
+import quantityRoutes from "./routes/quantityRoute.js";
 import configurePassport from "./config/passportConfig.js";
 dotenv.config();
 
@@ -18,5 +19,5 @@ app.use(passport.initialize());
 configurePassport(passport);
 app.use("/api/admin", authRoutes);
 app.use("/api/price", priceRoutes);
-
+app.use("/api/quantity",quantityRoutes)
 export default app;

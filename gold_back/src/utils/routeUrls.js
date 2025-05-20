@@ -5,5 +5,7 @@ const routerUrl = {
   createPrice: "/create",
   getPrice: "/get",
   getAllPrice: "/get-all",
+
+  createQuantity:"/create"
 };
 export default routerUrl;
