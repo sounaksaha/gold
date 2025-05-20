@@ -4,7 +4,7 @@ import goldImage from "/gold.png";
 import { API_URl } from "../../config";
 
 export default function AddTotal() {
-  const [activeTab, setActiveTab] = useState("Gold");
+  const [activeTab, setActiveTab] = useState("gold");
   //const [date, setDate] = useState("");
   const [totalGold, setTotalGold] = useState("");
   const [totalSilver, setTotalSilver] = useState("");
@@ -15,7 +15,7 @@ export default function AddTotal() {
 
   const handlePriceChange = (e) => {
     const value = e.target.value;
-    if (activeTab === "Gold") {
+    if (activeTab === "gold") {
       setTotalGold(value);
     } else {
       setTotalSilver(value);
@@ -92,7 +92,7 @@ export default function AddTotal() {
             <div className="h-20 p-6 mb-4 text-white">
               <img
                 className="h-10 w-10" // Adjust the size as needed
-                src={activeTab === "Gold" ? goldImage : silverCoinImage} // Replace with the actual path to your gold coin image
+                src={activeTab === "gold" ? goldImage : silverCoinImage} // Replace with the actual path to your gold coin image
                 alt="Gold Coin"
               />
             </div>
@@ -110,16 +110,16 @@ export default function AddTotal() {
                   <li
                     role="tab"
                     className={`relative flex items-center justify-center w-full h-full px-2 py-1 font-sans text-base antialiased font-normal leading-relaxed text-center bg-transparent cursor-pointer select-none ${
-                      activeTab === "Gold"
+                      activeTab === "gold"
                         ? "text-gray-50"
                         : "text-blue-gray-900"
                     }`}
-                    onClick={() => handleTabClick("Gold")}
+                    onClick={() => handleTabClick("gold")}
                   >
                     <div className="z-20 text-inherit">Gold</div>
                     <div
                       className={`absolute inset-0 z-10 h-full bg-yellow-600 rounded-md shadow ${
-                        activeTab === "Gold" ? "opacity-100" : "opacity-0"
+                        activeTab === "gold" ? "opacity-100" : "opacity-0"
                       }`}
                       data-projection-id="4"
                     ></div>
@@ -127,16 +127,16 @@ export default function AddTotal() {
                   <li
                     role="tab"
                     className={`relative flex items-center justify-center w-full h-full px-2 py-1 font-sans text-base antialiased font-normal leading-relaxed text-center bg-transparent cursor-pointer select-none ${
-                      activeTab === "Silver"
+                      activeTab === "silver"
                         ? "text-gray-50"
                         : "text-blue-gray-900"
                     }`}
-                    onClick={() => handleTabClick("Silver")}
+                    onClick={() => handleTabClick("silver")}
                   >
                     <div className="z-20 text-inherit">Silver</div>
                     <div
                       className={`absolute inset-0 z-10 h-full bg-gray-600 rounded-md shadow ${
-                        activeTab === "Silver" ? "opacity-100" : "opacity-0"
+                        activeTab === "silver" ? "opacity-100" : "opacity-0"
                       }`}
                       data-projection-id="4"
                     ></div>
@@ -186,7 +186,7 @@ export default function AddTotal() {
                     </div>
                     <button
                       className={`select-none rounded-lg ${
-                        activeTab === "Gold" ? "bg-yellow-600" : "bg-gray-600"
+                        activeTab === "gold" ? "bg-yellow-600" : "bg-gray-600"
                       } py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
                       type="button"
                       onClick={handleAddButtonClick}
